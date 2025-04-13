@@ -49,6 +49,10 @@ docker-compose exec app composer install
 echo -e "${YELLOW}Running database migrations...${NC}"
 docker-compose exec app ./bin/console migrations:migrate --no-interaction
 
+# Run tests
+echo -e "${YELLOW}Running tests...${NC}"
+docker-compose exec app vendor/bin/phpunit tests
+
 # Setup Frontend
 echo -e "${YELLOW}Setting up frontend...${NC}"
 cd ../frontend
