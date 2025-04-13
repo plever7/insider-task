@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+
+use App\Infrastructure\Console\ConsoleCommandRegistry;
+use DI\ContainerBuilder;
+use Symfony\Component\Console\Application;
+
+// Load environment variables
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
+$containerBuilder = new ContainerBuilder();
+$container_settings = require __DIR__ . '/../config/container.php';
+$container_settings($containerBuilder);
+
+// Create and configure app
+$container = $containerBuilder->build();
+// Create console application
+$console = new Application('Insider Champions League', '1.0.0');
+
+// Register commands
+$registry = new ConsoleCommandRegistry($container);
+$registry->registerCommands($console);
+
+// Run the console application
+$console->run();
